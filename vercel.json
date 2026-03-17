@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd frontend && npm install && npx tsc -b && npx vite build --outDir ../public",
+  "buildCommand": "cd frontend && npm install && npx tsc -b && npx vite build --outDir ../backend/app/static",
   "rewrites": [
     {
       "source": "/api/(.*)",
