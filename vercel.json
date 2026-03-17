@@ -1,6 +1,5 @@
 {
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/dist",
+  "buildCommand": "cd frontend && npm install && npx tsc -b && npx vite build --outDir ../public",
   "rewrites": [
     {
       "source": "/api/(.*)",
