@@ -5,6 +5,10 @@ import { spawnSync } from "node:child_process";
 const rootDir = process.cwd();
 const venvDir = join(rootDir, ".venv");
 const frontendDir = join(rootDir, "frontend");
+const npmRunner =
+  process.platform === "win32"
+    ? { command: "cmd.exe", baseArgs: ["/d", "/s", "/c", "npm"] }
+    : { command: "npm", baseArgs: [] };
 const backendEnvFile = join(rootDir, "backend", ".env");
 const backendEnvExample = join(rootDir, "backend", ".env.example");
 const frontendEnvFile = join(frontendDir, ".env");
@@ -16,6 +20,12 @@ function run(command, args, options = {}) {
     shell: false,
     ...options,
   });
+
+  if (result.error) {
+    console.error(`Failed to run: ${command} ${args.join(" ")}`);
+    console.error(result.error.message);
+    process.exit(1);
+  }
 
   if (result.status !== 0) {
     process.exit(result.status ?? 1);
@@ -65,7 +75,7 @@ function ensureEnvFile(targetFile, exampleFile) {
 
 const python = resolvePythonCommand();
 
-run("npm", ["install"], { cwd: rootDir });
+run(npmRunner.command, [...npmRunner.baseArgs, "install"], { cwd: rootDir });
 
 if (!existsSync(venvDir)) {
   run(python.command, [...python.baseArgs, "-m", "venv", ".venv"], { cwd: rootDir });
@@ -74,7 +84,7 @@ if (!existsSync(venvDir)) {
 const venvPython = resolveVenvPython();
 
 run(venvPython, ["-m", "pip", "install", "-r", "backend/requirements.txt"], { cwd: rootDir });
-run("npm", ["install"], { cwd: frontendDir });
+run(npmRunner.command, [...npmRunner.baseArgs, "install"], { cwd: frontendDir });
 
 ensureEnvFile(backendEnvFile, backendEnvExample);
 ensureEnvFile(frontendEnvFile, frontendEnvExample);
