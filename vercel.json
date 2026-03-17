@@ -1,10 +1,5 @@
 {
   "buildCommand": "cd frontend && npm install && npx tsc -b && npx vite build --outDir ../public",
-  "functions": {
-    "api/**/*.py": {
-      "includeFiles": "public/**"
-    }
-  },
   "rewrites": [
     {
       "source": "/api/(.*)",
