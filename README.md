@@ -1,4 +1,4 @@
-# Product Control Center
+# Product Control Center 
 
 Product Control Center is a sample CRUD application built with Vite, React, FastAPI, and PostgreSQL. The repository is organized to stay easy to scale and easy for AI tools to navigate.
 
